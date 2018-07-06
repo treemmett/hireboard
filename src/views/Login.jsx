@@ -24,7 +24,7 @@ export default class Login extends Component{
             <fieldset disable={this.state.disabled}>
               <input name="username" placeholder="Username" required/>
               <input name="password" placeholder="Password" type="password" required/>
-              <input type="submit" value="Login"/>
+              <input className="btn" type="submit" value="Login"/>
             </fieldset>
           </form>
         </div>

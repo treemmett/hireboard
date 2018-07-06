@@ -16,22 +16,129 @@ export default class Admin extends Component{
     super(props);
 
     this.state = {
-      selected: '',
       addingNew: false,
       dropdown: false
     }
   }
 
-  render(){
-    // Map user
-    const users = this.props.techs.map((user, index) => <User onClick={e => {e.stopPropagation(); this.setState({selected: user.username, dropdown: false})}} data={user} key={index} selected={this.state.selected === user.username}/>);
+  pageSettings = {
+    hires: {
+      title: 'New Hires',
+      data: 'techs', // Temporary, until hire store is setup
+      url: '/hires',
+      headers: [
+        'Name',
+        'Reference',
+        'Location',
+        'System',
+        'Monitors',
+        'Manager',
+        'Assigned',
+        'Account Setup',
+        'Hardware Deployed'
+      ],
+      keys: [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        'username',
+        null,
+        null
+      ],
+      form: [
+        {
+          name: 'name',
+          placeholder: 'Name',
+          required: true
+        },
+        {
+          name: 'ref',
+          placeholder: 'Reference',
+          required: true
+        },
+        {
+          name: 'location',
+          placeholder: 'Location'
+        },
+        {
+          name: 'system',
+          placeholder: 'System'
+        },
+        {
+          name: 'monitors',
+          placeholder: 'Monitors'
+        },
+        {
+          name: 'manager',
+          placeholder: 'Manager'
+        },
+        {
+          name: 'assigned',
+          placeholder: 'Assigned'
+        },
+        {
+          name: 'accountSetup',
+          placeholder: 'Account Setup'
+        },
+        {
+          name: 'hardwareDeployed',
+          placeholder: 'Hardware Deployed'
+        }
+      ]
+    },
+    techs: {
+      title: 'Technicians',
+      data: 'techs',
+      url: '/techs',
+      headers: [
+        'Username',
+        'First Name',
+        'Last Name'
+      ],
+      keys: [
+        'username',
+        'firstName',
+        'lastName'
+      ],
+      form: [
+        {
+          name: 'username',
+          placeholder: 'Username',
+          required: true
+        },
+        {
+          name: 'firstName',
+          placeholder: 'First Name',
+          required: true
+        },
+        {
+          name: 'lastName',
+          placeholder: 'Last Name',
+          required: true
+        }
+      ]
+    }
+  }
 
+  render(){
+    // Get reference to current data set
+    const dataset = this.pageSettings[this.props.match.params.page || 'hires'];
+
+    // Map headers
+    const headers = dataset.headers.map((header, index) => <th key={index}>{header}</th>);
+
+    // Map data
+    const data = this.props[dataset.data].map((user, index) => <Row data={user} keys={dataset.keys} key={index}/>);
+    
     return (
-      <div className="admin" onClick={() => this.setState({selected: '', dropdown: false})}>
-        {this.state.addingNew ? <Modal dispatch={this.props.dispatch} close={() => this.setState({addingNew: false})}/> : null}
+      <div className="admin" onClick={() => this.setState({dropdown: false})}>
+        {this.state.addingNew ? <Modal dataset={dataset} dispatch={this.props.dispatch} close={() => this.setState({addingNew: false})}/> : null}
         <div className="head">
           <div onClick={e => {e.stopPropagation(); this.setState({dropdown: !this.state.dropdown})}} className={classNames('title', {expanded: this.state.dropdown})}>
-            Technicians
+            {dataset.title}
             <div className="arrow">▼</div>
             <div className="dropdown">
               <Link to="/admin">New Hires</Link>
@@ -44,18 +151,14 @@ export default class Admin extends Component{
           <div className="header">
             <table>
               <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                </tr>
+                <tr>{headers}</tr>
               </thead>
             </table>
           </div>
           <div className="body">
             <table>
               <tbody>
-                {users}
+                {data}
               </tbody>
             </table>
           </div>
@@ -65,13 +168,13 @@ export default class Admin extends Component{
   }
 }
 
-const User = props => (
-  <tr onClick={props.onClick} className={props.selected ? 'selected' : ''}>
-    <td>{props.data.username}</td>
-    <td>{props.data.firstName}</td>
-    <td>{props.data.lastName}</td>
-  </tr>
-);
+const Row = props => {
+  const columns = props.keys.map((key, index) => <td key={index}>{props.data[key]}</td>);
+
+  return (
+    <tr>{columns}</tr>
+  );
+}
 
 class Modal extends Component{
   constructor(props){
@@ -87,7 +190,7 @@ class Modal extends Component{
     console.log(data);
 
     // Make request
-    api.post('/techs', data)
+    api.post(this.props.dataset.url, data)
       .then(res => {
         this.props.dispatch({
           type: 'ADD_TECH',
@@ -98,15 +201,16 @@ class Modal extends Component{
   }
 
   render(){
+    // Render inputs
+    const inputs = this.props.dataset.form.map((input, index) => <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required}/>);
+
     return (
     <div className="modal" onClick={this.props.close}>
       <div className="modalCard" onClick={e => e.stopPropagation()}>
         <form onSubmit={this.save}>
           <fieldset disabled={this.state.disabled}>
-            <input name="username" placeholder="Username" required/>
-            <input name="firstName" placeholder="First Name" required/>
-            <input name="lastName" placeholder="Last Name" required/>
-            <input type="submit" value="Save"/>
+            {inputs}
+            <input className="btn" type="submit" value="Save"/>
           </fieldset>
         </form>
       </div>
