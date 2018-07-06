@@ -71,4 +71,7 @@ techs.post('/', (req, res, next) => {
   });
 });
 
-module.exports = techs;
+module.exports = {
+  route: techs,
+  schema: Tech
+};

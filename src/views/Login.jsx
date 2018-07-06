@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import api from '../utils/api';
+import serialize from '../utils/serialize';
 import './Login.scss';
 
 export default class Login extends Component{
@@ -9,6 +11,9 @@ export default class Login extends Component{
 
   login = e => {
     e.preventDefault();
+    const data = serialize(e.target);
+    
+    api.post('/login', data).then(() => this.props.history.push('/admin'));
   }
 
   render(){
