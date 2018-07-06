@@ -1,3 +1,4 @@
+import api from '../utils/api';
 import React, { Component } from 'react';
 import serialize from '../utils/serialize';
 import './Admin.scss';
@@ -82,6 +83,9 @@ class Modal extends Component{
     e.preventDefault();
     const data = serialize(e.target);
     console.log(data);
+
+    // Make request
+    api.post('/techs', data).then(this.props.close);
   }
 
   render(){

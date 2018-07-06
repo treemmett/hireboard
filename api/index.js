@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
-router.all('*', (req, res) => {
-  res.send('Hello there');
-});
+router.use('/techs', require('./techs'));
 
+router.use(require('./errorHandler'));
 module.exports = router;
