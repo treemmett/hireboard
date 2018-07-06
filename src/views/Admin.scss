@@ -1,0 +1,37 @@
+@import '../components';
+
+.admin{
+  background-color: #f7f7f7;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .head{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 0.5em 1em;
+    flex-shrink: 0;
+
+    .title{
+      font-size: 26px;
+      font-weight: bold;
+      margin-right: 1em;
+    }
+  }
+
+  .table{
+    margin: 3em;
+
+    .header{
+      background-color: #f3f3f3;
+      color: #333;
+      border: none;
+    }
+
+    tr.selected{
+      background-color: $blue;
+      color: #fff;
+    }
+  }
+}

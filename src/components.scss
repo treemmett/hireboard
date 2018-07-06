@@ -1,0 +1,117 @@
+$blue: #496bff;
+
+.btn{
+  background-color: $blue;
+  color: #fff;
+  padding: 0.5em 0.75em;
+  font-size: 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.1s linear;
+
+  &:hover{
+    background-color: darken($blue, 5%);
+  }
+
+  &:active{
+    background-color: darken($blue, 10%);
+  }
+}
+
+.table{
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  height: 100%;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 5px;
+  -webkit-font-smoothing: antialiased;
+  
+  table{
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .header{
+    background-color: #333;
+    color: #eee;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+
+  .body{
+    overflow: auto;
+    overflow: overlay;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    tr{
+      background-color: #fff;
+
+      &:nth-child(2n){
+        background-color: #f1f1f1;
+      }
+    }
+  }
+
+  tr{
+    height: 50px;
+  }
+}
+
+.modal{
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(#000, 0.5);
+  overflow-x: hidden;
+
+  .modalCard{
+    margin: auto;
+    background-color: #fff;
+    padding: 1.5em 2em;
+    border-radius: 8px;
+  }
+}
+
+form, fieldset{
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  input{
+    display: block;
+    font-size: 15px;
+    padding: 0.5em 0.75em;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    background-color: #fff;
+    outline: none;
+
+    & + *{
+      margin-top: 0.5rem;
+    }
+
+    &[type=submit]{
+      margin-left: auto;
+      color: #88D498;
+      border: 1px solid #88D498;
+      will-change: color, background-color;
+      transition: color 0.1s linear, background-color 0.1s linear;
+      cursor: pointer;
+
+      &:hover{
+        color: #fff;
+        background-color: #88D498;
+      }
+    }
+  }
+}

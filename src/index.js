@@ -4,8 +4,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import store from './store';
 import './index.css';
+import './components.scss';
 
 // Views
+import Admin from './views/Admin';
 import Dashboard from './views/Dashboard';
 import Login from './views/Login';
 
@@ -15,6 +17,8 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Dashboard}/>
         <Route exact path="/login" component={Login}/>
+
+        <Route exact path="/admin" component={Admin}/>
       </Switch>
     </Router>
   </Provider>
