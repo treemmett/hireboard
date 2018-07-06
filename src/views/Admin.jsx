@@ -1,8 +1,14 @@
 import api from '../utils/api';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import serialize from '../utils/serialize';
 import './Admin.scss';
 
+@connect(store => {
+  return {
+    techs: store.techs.data
+  }
+})
 export default class Admin extends Component{
   constructor(props){
     super(props);
@@ -14,26 +20,12 @@ export default class Admin extends Component{
   }
 
   render(){
-    const userData = [{
-      username: 'temmett',
-      firstName: 'Tregan',
-      lastName: 'Emmett'
-    },{
-      username: 'apack',
-      firstName: 'Austin',
-      lastName: 'Pack'
-    },{
-      username: 'dmccloud',
-      firstName: 'Davin',
-      lastName: 'McCloud'
-    }];
-
     // Map user
-    const users = userData.map((user, index) => <User onClick={e => {e.stopPropagation(); this.setState({selected: user.username})}} data={user} key={index} selected={this.state.selected === user.username}/>);
+    const users = this.props.techs.map((user, index) => <User onClick={e => {e.stopPropagation(); this.setState({selected: user.username})}} data={user} key={index} selected={this.state.selected === user.username}/>);
 
     return (
       <div className="admin" onClick={() => this.setState({selected: ''})}>
-        {this.state.addingNew ? <Modal close={() => this.setState({addingNew: false})}/> : null}
+        {this.state.addingNew ? <Modal dispatch={this.props.dispatch} close={() => this.setState({addingNew: false})}/> : null}
         <div className="head">
           <span className="title">Technicians</span>
           <div className="btn" onClick={() => this.setState({addingNew: true})}>Add New +</div>
@@ -85,7 +77,14 @@ class Modal extends Component{
     console.log(data);
 
     // Make request
-    api.post('/techs', data).then(this.props.close);
+    api.post('/techs', data)
+      .then(res => {
+        this.props.dispatch({
+          type: 'ADD_TECH',
+          payload: res.data
+        });
+        this.props.close();
+      });
   }
 
   render(){

@@ -34,6 +34,14 @@ schema.pre('findOneAndUpdate', function(next){
 });
 const Tech = mongoose.model('Techs', schema);
 
+techs.get('/', (req, res, next) => {
+  // Get techs from DB
+  Tech.find({}, {_id: 0, __v: 0, hash: 0, mustChangePassword: 0}, (err, data) => {
+    if(err) return next(err);
+
+    res.send(data);
+  });
+});
 techs.post('/', (req, res, next) => {
   // Hash username for password
   bcrypt.hash(req.body.username, 10, (err, hash) => {

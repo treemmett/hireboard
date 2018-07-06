@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
 // Reducer functions
-import data from './data';
+import techs from './techs';
 
 export default combineReducers({
-  data: data
+  techs: techs
 });
