@@ -1,0 +1,48 @@
+.login{
+  background-color: #fafafa;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .card{
+    background-color: #fff;
+    padding: 1.5em 1em;
+    box-shadow: 0 15px 24px 8px rgba(#000, 0.2);
+    border-radius: 5px;
+
+    form, fieldset{
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+
+    input{
+      display: block;
+      font-size: 15px;
+      padding: 0.5em 0.75em;
+      border-radius: 8px;
+      border: 1px solid #cfcfcf;
+      background-color: #fff;
+      outline: none;
+
+      & + *{
+        margin-top: 0.5rem;
+      }
+
+      &[type=submit]{
+        margin-left: auto;
+        color: #88D498;
+        border: 1px solid #88D498;
+        will-change: color, background-color;
+        transition: color 0.1s linear, background-color 0.1s linear;
+        cursor: pointer;
+
+        &:hover{
+          color: #fff;
+          background-color: #88D498;
+        }
+      }
+    }
+  }
+}

@@ -7,12 +7,14 @@ import './index.css';
 
 // Views
 import Dashboard from './views/Dashboard';
+import Login from './views/Login';
 
 const App = () => (
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/" component={Dashboard}/>
+        <Route exact path="/" component={Dashboard}/>
+        <Route exact path="/login" component={Login}/>
       </Switch>
     </Router>
   </Provider>
