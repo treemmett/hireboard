@@ -34,6 +34,7 @@ const App = () => {
           <Route exact path="/login" component={Login}/>
 
           <PrivateRoute exact path="/admin" component={Admin}/>
+          <PrivateRoute exact path="/admin/:page" component={Admin}/>
         </Switch>
       </Router>
     </Provider>

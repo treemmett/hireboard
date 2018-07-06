@@ -1,6 +1,8 @@
 import api from '../utils/api';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import serialize from '../utils/serialize';
 import './Admin.scss';
 
@@ -15,19 +17,27 @@ export default class Admin extends Component{
 
     this.state = {
       selected: '',
-      addingNew: false
+      addingNew: false,
+      dropdown: false
     }
   }
 
   render(){
     // Map user
-    const users = this.props.techs.map((user, index) => <User onClick={e => {e.stopPropagation(); this.setState({selected: user.username})}} data={user} key={index} selected={this.state.selected === user.username}/>);
+    const users = this.props.techs.map((user, index) => <User onClick={e => {e.stopPropagation(); this.setState({selected: user.username, dropdown: false})}} data={user} key={index} selected={this.state.selected === user.username}/>);
 
     return (
-      <div className="admin" onClick={() => this.setState({selected: ''})}>
+      <div className="admin" onClick={() => this.setState({selected: '', dropdown: false})}>
         {this.state.addingNew ? <Modal dispatch={this.props.dispatch} close={() => this.setState({addingNew: false})}/> : null}
         <div className="head">
-          <span className="title">Technicians</span>
+          <div onClick={e => {e.stopPropagation(); this.setState({dropdown: !this.state.dropdown})}} className={classNames('title', {expanded: this.state.dropdown})}>
+            Technicians
+            <div className="arrow">▼</div>
+            <div className="dropdown">
+              <Link to="/admin">New Hires</Link>
+              <Link to="/admin/techs">Technicians</Link>
+            </div>
+          </div>
           <div className="btn" onClick={() => this.setState({addingNew: true})}>Add New +</div>
         </div>
         <div className="table">
