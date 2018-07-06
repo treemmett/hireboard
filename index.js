@@ -2,7 +2,7 @@ const chokidar = require('chokidar');
 const express = require('express');
 
 const app = express();
-const watcher = chokidar.watch('./');
+const watcher = chokidar.watch('./api');
 
 watcher.on('ready', () => {
   watcher.on('all', () => {
