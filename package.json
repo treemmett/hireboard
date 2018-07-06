@@ -2,8 +2,14 @@
   "name": "hireboard",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node . & react-scripts start",
+    "build": "react-scripts build"
+  },
   "dependencies": {
+    "chokidar": "^2.0.4",
     "custom-react-scripts": "^0.2.2",
+    "express": "^4.16.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
@@ -11,11 +17,12 @@
     "redux-promise-middleware": "^5.1.1",
     "redux-thunk": "^2.3.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
-  },
   "devDependencies": {
     "redux-logger": "^3.0.6"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080/"
+    }
   }
 }
