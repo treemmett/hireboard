@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 
 // Reducer functions
+import login from './login';
 import techs from './techs';
 
 export default combineReducers({
-  techs: techs
+  login: login,
+  techs: techs,
 });
