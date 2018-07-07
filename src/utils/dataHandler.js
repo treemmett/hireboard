@@ -15,6 +15,12 @@ function checkIfLoggedIn(){
       type: 'GET_TECHS',
       payload: api.get('/techs')
     });
+
+    // Fetch hires
+    store.dispatch({
+      type: 'GET_HIRES',
+      payload: api.get('/hires')
+    });
   }
 }
 

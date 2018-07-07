@@ -8,6 +8,7 @@ import './Admin.scss';
 
 @connect(store => {
   return {
+    hires: store.hires.data,
     techs: store.techs.data
   }
 })
@@ -24,8 +25,9 @@ export default class Admin extends Component{
   pageSettings = {
     hires: {
       title: 'New Hires',
-      data: 'techs', // Temporary, until hire store is setup
+      data: 'hires',
       url: '/hires',
+      dispatchEvent: 'ADD_HIRE',
       headers: [
         'Name',
         'Reference',
@@ -38,15 +40,15 @@ export default class Admin extends Component{
         'Hardware Deployed'
       ],
       keys: [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        'username',
-        null,
-        null
+        'name',
+        'ref',
+        'location',
+        'system',
+        'monitors',
+        'manager',
+        'assigned',
+        'accountSetup',
+        'hardwareDeployed'
       ],
       form: [
         {
@@ -93,6 +95,7 @@ export default class Admin extends Component{
       title: 'Technicians',
       data: 'techs',
       url: '/techs',
+      dispatchEvent: 'ADD_TECH',
       headers: [
         'Username',
         'First Name',
@@ -193,7 +196,7 @@ class Modal extends Component{
     api.post(this.props.dataset.url, data)
       .then(res => {
         this.props.dispatch({
-          type: 'ADD_TECH',
+          type: this.props.dataset.dispatchEvent,
           payload: res.data
         });
         this.props.close();
@@ -205,7 +208,7 @@ class Modal extends Component{
     const inputs = this.props.dataset.form.map((input, index) => <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required}/>);
 
     return (
-    <div className="modal" onClick={this.props.close}>
+    <div className="modal" onClick={e => {e.stopPropagation(); this.props.close()}}>
       <div className="modalCard" onClick={e => e.stopPropagation()}>
         <form onSubmit={this.save}>
           <fieldset disabled={this.state.disabled}>

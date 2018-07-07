@@ -11,6 +11,7 @@ router.use(jwt({
 }));
 
 router.use('/login', require('./login'));
+router.use('/hires', require('./hires'));
 router.use('/techs', require('./techs').route);
 
 router.use(require('./errorHandler'));

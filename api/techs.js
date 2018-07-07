@@ -36,7 +36,7 @@ const Tech = mongoose.model('Techs', schema);
 
 techs.get('/', (req, res, next) => {
   // Get techs from DB
-  Tech.find({}, {_id: 0, __v: 0, hash: 0, mustChangePassword: 0}, (err, data) => {
+  Tech.find({}, {__v: 0, hash: 0, mustChangePassword: 0}, (err, data) => {
     if(err) return next(err);
 
     res.send(data);
@@ -61,7 +61,6 @@ techs.post('/', (req, res, next) => {
 
       // Remove database specific data and hash
       const data = {...tech}._doc;
-      delete data._id;
       delete data.__v;
       delete data.hash;
       delete data.mustChangePassword;
