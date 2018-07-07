@@ -34,6 +34,20 @@ export default function(state={
       break;
     }
 
+    case 'UPDATE_TECH': {
+      state = {...state};
+      // Find index of old data
+      const index = state.data.findIndex(item => {
+        return item._id === action.payload._id;
+      });
+
+      // Replace data
+      if(index > -1){
+        state.data[index] = action.payload;
+      }
+      break;
+    }
+
     default: break;
   }
 

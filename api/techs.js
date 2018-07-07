@@ -28,10 +28,6 @@ const schema = mongoose.Schema({
   mustChangePassword: {type: Boolean}
 });
 schema.plugin(uniqueValidator);
-schema.pre('findOneAndUpdate', function(next){
-  this.options.runValidators = true;
-  next();
-});
 const Tech = mongoose.model('Techs', schema);
 
 techs.get('/', (req, res, next) => {
@@ -67,6 +63,16 @@ techs.post('/', (req, res, next) => {
 
       res.status(201).send(data);
     });
+  });
+});
+techs.put('/:id', (req, res, next) => {
+  // Delete id from body before feeding to db
+  delete req.body._id;
+
+  Tech.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true, context: 'query'}, (err, data) => {
+    if(err) return next(err);
+
+    res.send(data);
   });
 });
 

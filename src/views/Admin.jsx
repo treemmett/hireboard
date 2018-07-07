@@ -17,7 +17,7 @@ export default class Admin extends Component{
     super(props);
 
     this.state = {
-      addingNew: false,
+      modal: false,
       dropdown: false
     }
   }
@@ -27,7 +27,7 @@ export default class Admin extends Component{
       title: 'New Hires',
       data: 'hires',
       url: '/hires',
-      dispatchEvent: 'ADD_HIRE',
+      dispatchEvent: 'HIRE',
       headers: [
         'Name',
         'Reference',
@@ -95,7 +95,7 @@ export default class Admin extends Component{
       title: 'Technicians',
       data: 'techs',
       url: '/techs',
-      dispatchEvent: 'ADD_TECH',
+      dispatchEvent: 'TECH',
       headers: [
         'Username',
         'First Name',
@@ -134,11 +134,11 @@ export default class Admin extends Component{
     const headers = dataset.headers.map((header, index) => <th key={index}>{header}</th>);
 
     // Map data
-    const data = this.props[dataset.data].map((user, index) => <Row data={user} keys={dataset.keys} key={index}/>);
+    const data = this.props[dataset.data].map((item, index) => <Row open={() => this.setState({modal: item})} data={item} keys={dataset.keys} key={index}/>);
     
     return (
       <div className="admin" onClick={() => this.setState({dropdown: false})}>
-        {this.state.addingNew ? <Modal dataset={dataset} dispatch={this.props.dispatch} close={() => this.setState({addingNew: false})}/> : null}
+        {this.state.modal ? <Modal dataset={dataset} data={typeof this.state.modal === 'object' ? this.state.modal : {}} dispatch={this.props.dispatch} close={() => this.setState({modal: false})}/> : null}
         <div className="head">
           <div onClick={e => {e.stopPropagation(); this.setState({dropdown: !this.state.dropdown})}} className={classNames('title', {expanded: this.state.dropdown})}>
             {dataset.title}
@@ -148,7 +148,7 @@ export default class Admin extends Component{
               <Link to="/admin/techs">Technicians</Link>
             </div>
           </div>
-          <div className="btn" onClick={() => this.setState({addingNew: true})}>Add New +</div>
+          <div className="btn primary" onClick={() => this.setState({modal: true})}>Add New +</div>
         </div>
         <div className="table">
           <div className="header">
@@ -175,7 +175,7 @@ const Row = props => {
   const columns = props.keys.map((key, index) => <td key={index}>{props.data[key]}</td>);
 
   return (
-    <tr>{columns}</tr>
+    <tr onClick={props.open}>{columns}</tr>
   );
 }
 
@@ -190,22 +190,31 @@ class Modal extends Component{
   save = e => {
     e.preventDefault();
     const data = serialize(e.target);
-    console.log(data);
+
+    const isUpdate = Object.keys(this.props.data).length;
+
+    console.log(isUpdate);
 
     // Make request
-    api.post(this.props.dataset.url, data)
-      .then(res => {
-        this.props.dispatch({
-          type: this.props.dataset.dispatchEvent,
-          payload: res.data
-        });
-        this.props.close();
+    api({
+      method: isUpdate ? 'PUT' : 'POST',
+      url: isUpdate ? this.props.dataset.url + '/' + this.props.data._id : this.props.dataset.url,
+      data: data
+    })
+    .then(res => {
+      this.props.dispatch({
+        type: (isUpdate ? 'UPDATE_' : 'ADD_') + this.props.dataset.dispatchEvent,
+        payload: res.data
       });
+      this.props.close();
+    });
   }
 
   render(){
+    console.log(this.props.data);
+
     // Render inputs
-    const inputs = this.props.dataset.form.map((input, index) => <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required}/>);
+    const inputs = this.props.dataset.form.map((input, index) => <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} defaultValue={this.props.data[input.name]} required={input.required}/>);
 
     return (
     <div className="modal" onClick={e => {e.stopPropagation(); this.props.close()}}>
@@ -213,7 +222,10 @@ class Modal extends Component{
         <form onSubmit={this.save}>
           <fieldset disabled={this.state.disabled}>
             {inputs}
-            <input className="btn" type="submit" value="Save"/>
+            <div className="buttons">
+              <div className="btn" onClick={e => {e.stopPropagation(); this.props.close()}}>Close</div>
+              <input className="btn primary" type="submit" value="Save"/>
+            </div>
           </fieldset>
         </form>
       </div>

@@ -4,7 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const schema = mongoose.Schema({
   name: {type: String, trim: true, required: true},
-  ref: {type: Number, trim: true, required: true},
+  ref: {type: String, trim: true, required: true},
   location: {type: String, trim: true},
   system: {type: String, trim: true},
   monitors: {type: String, trim: true},
@@ -14,10 +14,6 @@ const schema = mongoose.Schema({
   hardwareDeployed: {type: Boolean},
 });
 schema.plugin(uniqueValidator);
-schema.pre('findOneAndUpdate', function(next){
-  this.options.runValidators = true;
-  next();
-});
 const Hire = mongoose.model('Hires', schema);
 
 hires.get('/', (req, res, next) => {
@@ -38,6 +34,17 @@ hires.post('/', (req, res, next) => {
     delete data.__v;
 
     res.status(201).send(data);
+  });
+});
+
+hires.put('/:id', (req, res, next) => {
+  // Delete id from body before feeding to db
+  delete req.body._id;
+
+  Hire.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true, context: 'query'}, (err, data) => {
+    if(err) return next(err);
+
+    res.send(data);
   });
 });
 
