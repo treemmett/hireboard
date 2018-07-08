@@ -44,6 +44,10 @@ hires.put('/:id', (req, res, next) => {
   Hire.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true, context: 'query'}, (err, data) => {
     if(err) return next(err);
 
+    // Delete version key
+    data = {...data}._doc;
+    delete data.__v;
+
     res.send(data);
   });
 });

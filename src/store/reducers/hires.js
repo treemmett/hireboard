@@ -41,10 +41,16 @@ export default function(state={
         return item._id === action.payload._id;
       });
 
-      // Replace data
-      if(index > -1){
-        state.data[index] = action.payload;
+      // Replace data      
+      state = {
+        ...state,
+        data: state.data.map((item, i) => {
+          if(i !== index) return item;
+  
+          return {...item, ...action.payload}
+        })
       }
+
       break;
     }
 

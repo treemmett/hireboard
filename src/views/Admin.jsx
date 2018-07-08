@@ -47,8 +47,30 @@ export default class Admin extends Component{
         'monitors',
         'manager',
         'assigned',
-        'accountSetup',
-        'hardwareDeployed'
+        {
+          type: 'checkbox',
+          name: 'accountSetup',
+          change: (e, data) => {
+            api.put('/hires/'+data._id, {accountSetup: e.target.checked}).then(res => {
+              this.props.dispatch({
+                type: 'UPDATE_HIRE',
+                payload: res.data
+              });
+            });
+          }
+        },
+        {
+          type: 'checkbox',
+          name: 'hardwareDeployed',
+          change: (e, data) => {
+            api.put('/hires/'+data._id, {hardwareDeployed: e.target.checked}).then(res => {
+              this.props.dispatch({
+                type: 'UPDATE_HIRE',
+                payload: res.data
+              });
+            });
+          }
+        }
       ],
       form: [
         {
@@ -172,7 +194,27 @@ export default class Admin extends Component{
 }
 
 const Row = props => {
-  const columns = props.keys.map((key, index) => <td key={index}>{props.data[key]}</td>);
+  const columns = props.keys.map((key, index) => {
+    let r = null;
+
+    switch(key.type){
+      case 'checkbox': {
+        r = (
+          <td key={index} onClick={e => e.stopPropagation()}>
+            <input onChange={e => key.change(e, props.data)} type="checkbox" checked={props.data[key.name]}/>
+          </td>
+        );
+        break;
+      }
+
+      default: {
+        r = <td key={index}>{props.data[key]}</td>;
+        break;
+      }
+    }
+
+    return r;
+  });
 
   return (
     <tr onClick={props.open}>{columns}</tr>
