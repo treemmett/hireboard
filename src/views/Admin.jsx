@@ -105,11 +105,13 @@ export default class Admin extends Component{
         },
         {
           name: 'accountSetup',
-          placeholder: 'Account Setup'
+          placeholder: 'Account Setup',
+          type: 'checkbox'
         },
         {
           name: 'hardwareDeployed',
-          placeholder: 'Hardware Deployed'
+          placeholder: 'Hardware Deployed',
+          type: 'checkbox'
         }
       ]
     },
@@ -200,8 +202,8 @@ const Row = props => {
     switch(key.type){
       case 'checkbox': {
         r = (
-          <td key={index} onClick={e => e.stopPropagation()}>
-            <input onChange={e => key.change(e, props.data)} type="checkbox" checked={props.data[key.name]}/>
+          <td key={index}>
+            <input onClick={e => e.stopPropagation()} onChange={e => key.change(e, props.data)} type="checkbox" checked={props.data[key.name]}/>
           </td>
         );
         break;
@@ -235,8 +237,6 @@ class Modal extends Component{
 
     const isUpdate = Object.keys(this.props.data).length;
 
-    console.log(isUpdate);
-
     // Make request
     api({
       method: isUpdate ? 'PUT' : 'POST',
@@ -253,10 +253,32 @@ class Modal extends Component{
   }
 
   render(){
-    console.log(this.props.data);
-
     // Render inputs
-    const inputs = this.props.dataset.form.map((input, index) => <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} defaultValue={this.props.data[input.name]} required={input.required}/>);
+    const inputs = this.props.dataset.form.map((input, index) => {
+      let r = null;
+
+      switch(input.type){
+        case 'checkbox': {
+          const id = Math.floor(Math.random() * 1000);
+
+          r = (
+            <div className="checkboxContainer" key={index}>
+              <input id={id} type="checkbox" name={input.name} defaultChecked={this.props.data[input.name]}/>
+              <label htmlFor={id} className="checkbox"/>
+              <label htmlFor={id} className="label">{input.placeholder}</label>
+            </div>
+          );
+          break;
+        }
+
+        default: {
+          r = <input key={index} type={input.type} name={input.name} placeholder={input.placeholder} defaultValue={this.props.data[input.name]} required={input.required}/>;
+          break;
+        }
+      }
+
+      return r;
+    });
 
     return (
     <div className="modal" onClick={e => {e.stopPropagation(); this.props.close()}}>

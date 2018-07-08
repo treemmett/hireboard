@@ -100,7 +100,7 @@ form, fieldset{
   padding: 0;
   border: none;
 
-  input:not(.btn){
+  input:not(.btn):not([type=checkbox]){
     display: block;
     font-size: 15px;
     padding: 0.5em 0.75em;
@@ -109,6 +109,43 @@ form, fieldset{
     border: 1px solid #cfcfcf;
     background-color: #fff;
     outline: none;
+
+    & + *{
+      margin-top: 0.5rem;
+    }
+  }
+
+  .checkboxContainer{
+    display: flex;
+
+    .checkbox{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+      border: 1px solid #cfcfcf;
+      border-radius: 8px;
+    }
+
+    input[type=checkbox]{
+      position: fixed;
+      pointer-events: none;
+      z-index: -1000;
+      left: -500%;
+      top: -500%;
+      opacity: 0;
+
+      &:checked + .checkbox:before{
+        content: '✓';
+        display: inline-block;
+        font-size: 20px;
+      }
+    }
+
+    .label{
+      margin-left: 0.5em;
+    }
 
     & + *{
       margin-top: 0.5rem;

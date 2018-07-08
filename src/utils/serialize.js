@@ -54,33 +54,33 @@ function serialize(form, options) {
         }
 
         // If we want empty elements
-        if (options.empty) {
-            // for checkbox
-            if (element.type === 'checkbox' && !element.checked) {
-                val = '';
-            }
+        // if (options.empty) {
+        //     // for checkbox
+        //     if (element.type === 'checkbox' && !element.checked) {
+        //         val = '';
+        //     }
 
-            // for radio
-            if (element.type === 'radio') {
-                if (!radio_store[element.name] && !element.checked) {
-                    radio_store[element.name] = false;
-                }
-                else if (element.checked) {
-                    radio_store[element.name] = true;
-                }
-            }
+        //     // for radio
+        //     if (element.type === 'radio') {
+        //         if (!radio_store[element.name] && !element.checked) {
+        //             radio_store[element.name] = false;
+        //         }
+        //         else if (element.checked) {
+        //             radio_store[element.name] = true;
+        //         }
+        //     }
 
-            // if options empty is true, continue only if its radio
-            if (val === undefined && element.type === 'radio') {
-                continue;
-            }
-        }
-        else {
-            // value-less fields are ignored unless options.empty is true
-            if (!val) {
-                continue;
-            }
-        }
+        //     // if options empty is true, continue only if its radio
+        //     if (val === undefined && element.type === 'radio') {
+        //         continue;
+        //     }
+        // }
+        // else {
+        //     // value-less fields are ignored unless options.empty is true
+        //     if (!val) {
+        //         continue;
+        //     }
+        // }
 
         // multi select boxes
         if (element.type === 'select-multiple') {
