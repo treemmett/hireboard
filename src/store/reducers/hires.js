@@ -34,6 +34,30 @@ export default function(state={
       break;
     }
 
+    case 'REMOVE_HIRE': {
+      state = {...state}
+
+      // Find index of old data
+      const index = state.data.findIndex(item => {
+        return item._id === action.payload;
+      });
+
+      // Remove data
+      if(index > -1){
+        state.data.splice(index, 1);
+      }
+      break;
+    }
+
+    case 'RESET_HIRES': {
+      state = {
+        fetching: false,
+        data: []
+      }
+
+      break;
+    }
+
     case 'UPDATE_HIRE': {
       state = {...state};
       // Find index of old data

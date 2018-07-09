@@ -1,4 +1,5 @@
 $blue: #496bff;
+$red: #cd5334;
 
 .btn{
   display: inline-block;
@@ -28,6 +29,21 @@ $blue: #496bff;
     background-color: darken($blue, 10%);
     border-color: darken($blue, 10%);
     color: #fff;
+  }
+
+  &.red{
+    color: $red;
+    border-color: $red;
+
+    &:hover{
+      background-color: $red;
+      color: #fff;
+    }
+
+    &:active{
+      background-color: darken($red, 5%);
+      color: #fff;
+    }
   }
 }
 

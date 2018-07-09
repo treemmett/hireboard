@@ -29,6 +29,17 @@ export default class Admin extends Component{
         data: 'hires',
         url: '/hires',
         dispatchEvent: 'HIRE',
+        deleteAll: e => {
+          if(!window.confirm('Are you sure you want to delete all hires? This can\'t be undone')){
+            return;
+          }
+
+          api.delete('/hires').then(e => {
+            this.props.dispatch({
+              type: 'RESET_HIRES'
+            });
+          }).catch(()=>{});
+        },
         headers: [
           'Name',
           'Reference',
@@ -177,6 +188,7 @@ export default class Admin extends Component{
             </div>
           </div>
           <div className="btn primary" onClick={() => this.setState({modal: true})}>Add New +</div>
+          {dataset.deleteAll ? <div className="btn red" onClick={dataset.deleteAll}>Delete All</div> : null}
         </div>
         <div className="table">
           <div className="header">
@@ -256,7 +268,25 @@ class Modal extends Component{
     }).catch(() => {});
   }
 
+  delete = e => {
+    if(!window.confirm('Are you sure you want to delete this item? This can\'t be undone.')){
+      return;
+    }
+
+    // Make request
+    api.delete(this.props.dataset.url + '/' + this.props.data._id)
+    .then(res => {
+      this.props.dispatch({
+        type: 'REMOVE_' + this.props.dataset.dispatchEvent,
+        payload: this.props.data._id
+      });
+      this.props.close();
+    }).catch(() => {});
+  }
+
   render(){
+    const isUpdate = Object.keys(this.props.data).length;
+
     // Render inputs
     const inputs = this.props.dataset.form.map((input, index) => {
       let r = null;
@@ -312,6 +342,7 @@ class Modal extends Component{
           <fieldset disabled={this.state.disabled}>
             {inputs}
             <div className="buttons">
+              {isUpdate ? <div className="btn red" onClick={this.delete}>Delete</div> : null}
               <div className="btn" onClick={e => {e.stopPropagation(); this.props.close()}}>Close</div>
               <input className="btn primary" type="submit" value="Save"/>
             </div>

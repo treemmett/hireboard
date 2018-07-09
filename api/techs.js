@@ -65,6 +65,24 @@ techs.post('/', (req, res, next) => {
     });
   });
 });
+techs.delete('/:id', (req, res,next) => {
+  // Remove document from collection
+  Tech.findOneAndRemove({_id: req.params.id}, (err, resp) => {
+    if(err){
+      return next(err);
+    }
+
+    // Check if nothing was deleted
+    if(!resp){
+      res.status(404).send({
+        error: ['Item not found.']
+      });
+      return;
+    }
+
+    res.end();
+  });
+});
 techs.put('/:id', (req, res, next) => {
   // Delete id from body before feeding to db
   delete req.body._id;

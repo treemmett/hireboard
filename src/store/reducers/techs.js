@@ -34,6 +34,21 @@ export default function(state={
       break;
     }
 
+    case 'REMOVE_TECH': {
+      state = {...state}
+
+      // Find index of old data
+      const index = state.data.findIndex(item => {
+        return item._id === action.payload;
+      });
+
+      // Remove data
+      if(index > -1){
+        state.data.splice(index, 1);
+      }
+      break;
+    }
+
     case 'UPDATE_TECH': {
       state = {...state};
       // Find index of old data

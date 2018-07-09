@@ -42,7 +42,29 @@ hires.post('/', (req, res, next) => {
     });
   });
 });
+hires.delete('/', (req, res, next) => {
+  Hire.remove({}, err => {
+    if(err) return next(err);
 
+    res.end();
+  });
+});
+hires.delete('/:id', (req, res,next) => {
+  // Remove document from collection
+  Hire.findOneAndRemove({_id: req.params.id}, (err, resp) => {
+    if(err) return next(err);
+
+    // Check if nothing was deleted
+    if(!resp){
+      res.status(404).send({
+        error: ['Item not found.']
+      });
+      return;
+    }
+
+    res.end();
+  });
+});
 hires.put('/:id', (req, res, next) => {
   // Delete id from body before feeding to db
   delete req.body._id;
