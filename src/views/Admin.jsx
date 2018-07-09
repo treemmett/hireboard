@@ -57,7 +57,7 @@ export default class Admin extends Component{
                   type: 'UPDATE_HIRE',
                   payload: res.data
                 });
-              });
+              }).catch(() => {});
             }
           },
           {
@@ -69,7 +69,7 @@ export default class Admin extends Component{
                   type: 'UPDATE_HIRE',
                   payload: res.data
                 });
-              });
+              }).catch(() => {});
             }
           }
         ],
@@ -253,7 +253,7 @@ class Modal extends Component{
         payload: res.data
       });
       this.props.close();
-    });
+    }).catch(() => {});
   }
 
   render(){

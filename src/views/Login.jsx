@@ -13,7 +13,7 @@ export default class Login extends Component{
     e.preventDefault();
     const data = serialize(e.target);
     
-    api.post('/login', data).then(() => this.props.history.push('/admin'));
+    api.post('/login', data).then(() => this.props.history.push('/admin')).catch(() => {});
   }
 
   render(){

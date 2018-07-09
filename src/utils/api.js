@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from '../store';
+import { toast } from 'react-toastify';
 
 const api = axios.create({baseURL: '/api'});
 
@@ -23,6 +24,13 @@ api.interceptors.response.use(res => {
       payload: false
     });
   }
+
+  if(err.response.data && err.response.data.error){
+    err.response.data.error.forEach(msg => {
+      toast.error(msg);
+    });
+  }
+
   return Promise.reject(err);
 });
 

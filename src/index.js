@@ -4,6 +4,8 @@ import { connect, Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
 import store from './store';
 import dataHandler from './utils/dataHandler';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import './components.scss';
 
@@ -28,15 +30,18 @@ const App = () => {
   
   return (
     <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Dashboard}/>
-          <Route exact path="/login" component={Login}/>
+      <React.Fragment>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Dashboard}/>
+            <Route exact path="/login" component={Login}/>
 
-          <PrivateRoute exact path="/admin" component={Admin}/>
-          <PrivateRoute exact path="/admin/:page" component={Admin}/>
-        </Switch>
-      </Router>
+            <PrivateRoute exact path="/admin" component={Admin}/>
+            <PrivateRoute exact path="/admin/:page" component={Admin}/>
+          </Switch>
+        </Router>
+        <ToastContainer/>
+      </React.Fragment>
     </Provider>
   );
 }
