@@ -76,6 +76,28 @@ techs.put('/:id', (req, res, next) => {
   });
 });
 
+// Add user if none exist
+Tech.find({}, (err, data) => {
+  if(err) throw err;
+
+  if(data.length === 0){
+    // Hash password
+    bcrypt.hash('admin', 10, (err, hash) => {
+      if(err) throw err;
+
+      // Save tech to database
+      const tech = new Tech({
+        username: 'admin',
+        firstName: 'Default',
+        lastName: 'User',
+        hash: hash,
+        mustChangePassword: false
+      });
+      tech.save();
+    });
+  }
+});
+
 module.exports = {
   route: techs,
   schema: Tech
