@@ -1,6 +1,7 @@
 const hires = require('express').Router();
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const wss = require('./ws');
 
 const schema = mongoose.Schema({
   name: {type: String, trim: true, required: true},
@@ -34,6 +35,11 @@ hires.post('/', (req, res, next) => {
     delete data.__v;
 
     res.status(201).send(data);
+
+    // Get all hires after update
+    Hire.find({}, {__v: 0}, (err, data) => {
+      wss.send(JSON.stringify(data));
+    });
   });
 });
 
@@ -49,6 +55,17 @@ hires.put('/:id', (req, res, next) => {
     delete data.__v;
 
     res.send(data);
+
+    // Get all hires after update
+    Hire.find({}, {__v: 0}, (err, data) => {
+      wss.send(JSON.stringify(data));
+    });
+  });
+});
+
+wss.server.on('connection', ws => {
+  Hire.find({}, {__v: 0}, (err, data) => {
+    ws.send(JSON.stringify(data));
   });
 });
 

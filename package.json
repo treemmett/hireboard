@@ -25,7 +25,8 @@
     "react-toastify": "^4.1.0",
     "redux": "^4.0.0",
     "redux-promise-middleware": "^5.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "ws": "^5.2.1"
   },
   "devDependencies": {
     "redux-logger": "^3.0.6"

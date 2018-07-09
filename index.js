@@ -29,6 +29,7 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', () => {
+  require('./api/ws');
   // Start server once connected
   app.use('/api', require('./api'));
   app.listen(8080, () => console.log('API server listening'));

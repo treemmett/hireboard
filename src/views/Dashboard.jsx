@@ -5,57 +5,20 @@ export default class Dashboard extends Component{
   constructor(props){
     super(props);
     this.state = {
-      hires: [
-        {
-          name: 'John Doe',
-          ref: 343103,
-          location: 'A1',
-          manager: 'Jane Doe',
-          system: '850 i7',
-          montitor: '24" x2',
-          phone: 'Softphone',
-          assigned: 'Joseph Doe',
-          accountSetup: true,
-          hardwareSetup: false
-        },
-        {
-          name: 'John Doe',
-          ref: 343103,
-          location: 'A1',
-          manager: 'Jane Doe',
-          system: '850 i7',
-          montitor: '24" x2',
-          phone: 'Softphone',
-          assigned: 'Joseph Doe',
-          accountSetup: true,
-          hardwareSetup: false
-        },
-        {
-          name: 'John Doe',
-          ref: 343103,
-          location: 'A1',
-          manager: 'Jane Doe',
-          system: '850 i7',
-          montitor: '24" x2',
-          phone: 'Softphone',
-          assigned: 'Joseph Doe',
-          accountSetup: true,
-          hardwareSetup: false
-        },
-        {
-          name: 'John Doe',
-          ref: 343103,
-          location: 'A1',
-          manager: 'Jane Doe',
-          system: '850 i7',
-          montitor: '24" x2',
-          phone: 'Softphone',
-          assigned: 'Joseph Doe',
-          accountSetup: true,
-          hardwareSetup: false
-        },
-      ]
+      hires: []
     }
+  }
+
+  componentDidMount(){
+    // Setup websocket connection
+    const ws = new WebSocket('ws://'+window.location.hostname+':8081');
+    console.log(ws);
+
+    ws.onopen = () => {
+      console.log('WebSocket connected...');
+    }
+
+    ws.onmessage = msg => this.setState({hires: JSON.parse(msg.data)});
   }
 
   render(){
@@ -74,7 +37,6 @@ export default class Dashboard extends Component{
                   <th>Manager</th>
                   <th>System</th>
                   <th>Monitor</th>
-                  <th>Phone</th>
                   <th>Assigned</th>
                   <th>Account Setup</th>
                   <th>Hardware Setup</th>
@@ -97,6 +59,14 @@ export default class Dashboard extends Component{
 
 const Person = props => (
   <tr>
-    {Object.keys(props.data).map((key, index) => <td key={index}>{props.data[key]}</td>)}
+    <td>{props.data.name}</td>
+    <td>{props.data.ref}</td>
+    <td>{props.data.location}</td>
+    <td>{props.data.manager}</td>
+    <td>{props.data.system}</td>
+    <td>{props.data.monitors}</td>
+    <td>{props.data.assigned}</td>
+    <td>{props.data.accountSetup ? '✓' : ''}</td>
+    <td>{props.data.hardwareDeployed ? '✓' : ''}</td>
   </tr>
 );
