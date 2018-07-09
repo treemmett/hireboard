@@ -10,5 +10,13 @@
     padding: 1.5em 1em;
     box-shadow: 0 15px 24px 8px rgba(#000, 0.2);
     border-radius: 5px;
+
+    input:not(.btn){
+      width: 15em;
+    }
+
+    .title{
+      font-size: 14px;
+    }
   }
 }
