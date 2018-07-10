@@ -58,6 +58,11 @@ export default function(state={
       break;
     }
 
+    case 'SET_HIRES': {
+      state = {data: action.payload};
+      break;
+    }
+
     case 'UPDATE_HIRE': {
       state = {...state};
       // Find index of old data

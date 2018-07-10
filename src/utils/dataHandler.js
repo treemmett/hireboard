@@ -21,6 +21,20 @@ function checkIfLoggedIn(){
       type: 'GET_HIRES',
       payload: api.get('/hires')
     });
+
+    // Initialize socket connection
+    const ws = new WebSocket('ws://'+window.location.hostname+':8081');
+
+    ws.onopen = () => {
+      console.log('WebSocket connected...');
+    }
+
+    ws.onmessage = msg => {
+      store.dispatch({
+        type: 'SET_HIRES',
+        payload: JSON.parse(msg.data)
+      });
+    };
   }
 }
 
