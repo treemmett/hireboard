@@ -46,6 +46,7 @@ export default class Admin extends Component{
           'Location',
           'System',
           'Monitors',
+          'Phone',
           'Manager',
           'Assigned',
           'Account Setup',
@@ -57,6 +58,11 @@ export default class Admin extends Component{
           'location',
           'system',
           'monitors',
+          {
+            name: 'phone',
+            label: '✓',
+            type: 'boolean'
+          },
           'manager',
           'assigned',
           {
@@ -106,6 +112,11 @@ export default class Admin extends Component{
           {
             name: 'monitors',
             label: 'Monitors'
+          },
+          {
+            name: 'phone',
+            label: 'Phone',
+            type: 'checkbox'
           },
           {
             name: 'manager',
@@ -222,6 +233,11 @@ const Row = props => {
             <input onClick={e => e.stopPropagation()} onChange={e => key.change(e, props.data)} type="checkbox" checked={props.data[key.name]}/>
           </td>
         );
+        break;
+      }
+
+      case 'boolean': {
+        r = <td key={index}>{props.data[key.name] ? key.label : ''}</td>;
         break;
       }
 

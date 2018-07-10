@@ -37,6 +37,7 @@ export default class Dashboard extends Component{
                   <th>Manager</th>
                   <th>System</th>
                   <th>Monitor</th>
+                  <th>Phone</th>
                   <th>Assigned</th>
                   <th>Account Setup</th>
                   <th>Hardware Setup</th>
@@ -65,6 +66,7 @@ const Person = props => (
     <td>{props.data.manager}</td>
     <td>{props.data.system}</td>
     <td>{props.data.monitors}</td>
+    <td>{props.data.phone ? '✓' : ''}</td>
     <td>{props.data.assigned}</td>
     <td>{props.data.accountSetup ? '✓' : ''}</td>
     <td>{props.data.hardwareDeployed ? '✓' : ''}</td>

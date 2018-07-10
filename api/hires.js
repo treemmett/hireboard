@@ -9,6 +9,7 @@ const schema = mongoose.Schema({
   location: {type: String, trim: true},
   system: {type: String, trim: true},
   monitors: {type: String, trim: true},
+  phone: {type: Boolean},
   manager: {type: String, trim: true},
   assigned: {type: String, trim: true},
   accountSetup: {type: Boolean},

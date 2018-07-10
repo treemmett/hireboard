@@ -2,12 +2,6 @@ export default function(state={
   data: []
 }, action){
   switch(action.type){
-    case 'ADD_HIRE': {
-      state = {...state}
-      state.data.push(action.payload);
-      break;
-    }
-
     case 'GET_HIRES_PENDING': {
       state = {
         ...state,
