@@ -47,6 +47,8 @@ hires.delete('/', (req, res, next) => {
     if(err) return next(err);
 
     res.end();
+
+    wss.send(JSON.stringify([]));
   });
 });
 hires.delete('/:id', (req, res,next) => {
@@ -63,6 +65,10 @@ hires.delete('/:id', (req, res,next) => {
     }
 
     res.end();
+
+    Hire.find({}, {__v: 0}, (err, data) => {
+      wss.send(JSON.stringify(data));
+    });
   });
 });
 hires.put('/:id', (req, res, next) => {

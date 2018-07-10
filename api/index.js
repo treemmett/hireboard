@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const jwt = require('express-jwt');
 
+// Don't crash on exceptions
+process.on('uncaughtException', console.error);
+process.on('unhandledRejection', console.error);
+
 // Require a valid token
 router.use(jwt({
   secret: 'mySecret'
