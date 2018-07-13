@@ -56,7 +56,10 @@ export default class Admin extends Component{
         ],
         keys: [
           'name',
-          'ref',
+          {
+            type: 'link',
+            name: 'ref'
+          },
           'location',
           'system',
           'monitors',
@@ -276,6 +279,15 @@ const Row = props => {
 
       case 'boolean': {
         r = <td key={index}>{props.data[key.name] ? key.label : ''}</td>;
+        break;
+      }
+
+      case 'link': {
+        r = (
+          <td key={index}>
+            <a onClick={e => e.stopPropagation()} target="_blank" rel="noopener noreferrer" href={`https://doterra.my.workfront.com/search?objCode=ALL&allowRedirect=false&query=${props.data[key.name]}&showResultsPage=false`}>{props.data[key.name]}</a>
+          </td>
+        );
         break;
       }
 
