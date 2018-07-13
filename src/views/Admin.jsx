@@ -9,6 +9,8 @@ import './Admin.scss';
 @connect(store => {
   return {
     hires: store.hires.data,
+    monitors: store.monitors.data,
+    systems: store.systems.data,
     techs: store.techs.data
   }
 })
@@ -107,11 +109,19 @@ export default class Admin extends Component{
           },
           {
             name: 'system',
-            label: 'System'
+            label: 'System',
+            type: 'select',
+            options: this.props.systems,
+            value: 'system',
+            optionLabel: 'system'
           },
           {
             name: 'monitors',
-            label: 'Monitors'
+            label: 'Monitor',
+            type: 'select',
+            options: this.props.monitors,
+            value: 'monitor',
+            optionLabel: 'monitor'
           },
           {
             name: 'phone',
@@ -127,7 +137,7 @@ export default class Admin extends Component{
             label: 'Assigned',
             type: 'select',
             options: this.props.techs,
-            value: 'username',
+            value: 'firstName',
             optionLabel: 'firstName'
           },
           {
@@ -141,6 +151,32 @@ export default class Admin extends Component{
             type: 'checkbox'
           }
         ]
+      },
+      systems: {
+        title: 'Systems',
+        data: 'systems',
+        url: '/systems',
+        dispatchEvent: 'SYSTEM',
+        headers: ['System'],
+        keys: ['system'],
+        form: [{
+          name: 'system',
+          label: 'System',
+          required: true
+        }]
+      },
+      monitors: {
+        title: 'Monitors',
+        data: 'monitors',
+        url: '/monitors',
+        dispatchEvent: 'MONITOR',
+        headers: ['Monitor'],
+        keys: ['monitor'],
+        form: [{
+          name: 'monitor',
+          label: 'Monitor',
+          required: true
+        }]
       },
       techs: {
         title: 'Technicians',
@@ -195,6 +231,8 @@ export default class Admin extends Component{
             <div className="arrow">▼</div>
             <div className="dropdown">
               <Link to="/admin">New Hires</Link>
+              <Link to="/admin/monitors">Monitors</Link>
+              <Link to="/admin/systems">Systems</Link>
               <Link to="/admin/techs">Technicians</Link>
             </div>
           </div>

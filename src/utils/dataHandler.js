@@ -22,6 +22,18 @@ function checkIfLoggedIn(){
       payload: api.get('/hires')
     });
 
+    // Fetch systems
+    store.dispatch({
+      type: 'GET_SYSTEMS',
+      payload: api.get('/systems')
+    });
+
+    // Fetch monitors
+    store.dispatch({
+      type: 'GET_MONITORS',
+      payload: api.get('/monitors')
+    });
+
     // Initialize socket connection
     const ws = new WebSocket('ws://'+window.location.hostname+':8081');
 
